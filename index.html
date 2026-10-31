@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Shop Supply">
+<meta name="theme-color" content="#2d6a4d">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAC6UlEQVR4Xu3dsXETQRiGYZmhB2IiItwJZDQBAR0Q0AGBqyCjFDIiYrogUOJAN9ZnS9/u6p4ntn3Szj+v9jQ367v3nz8c4JRXloUthgPDQU45UA5yyoFykFMOlIOccqAc5JQD5SCnHCgHOeVAOcgpB8pBTjlQDnLKgXKQUw6Ug5xyoBzklAPlIPc6/5Xr+v3w67oXOBzuv3y89iVuw1wfK4XJOBxKV7kBEw1HZzKOmtda10TDwWwMB+5WyCkHykFOOVAOcsqBcpBTDpSDnHKgHOSUA+UgpxwoBznlYIVyNJ/7bV5rXXfN//H289uPJ1fq3Zu3T/7MC/359/eFf2GsT9+/dl5AbzjOmQzO1JmP0p7DZFxWZz1Lw8GKDAcr3K0wG+VgdDk6u+v96Kxnrxyd97MHtZXsfc/BcnrlYDmGg9EbUlakHCgHOeVAOcgpB5umO4d0HuUTByd8clE5TitPxpynXxqOE/qTcTTqulsMB4aDnHKgHOSUA+UgpxwoBznlQDnIKQfKQU45UA5yyoFykFMOlIOccpww6lnfUdfdUj2CoXMG3qUUTkR97PzTUW/wfI61JmNynfkofayYjMvqrGdpOFiR4cCtLDnlYHQ5Orvr/eisZ68cnfezB7WVrH4Jxlp65WA5hoPRG1JWpBwoBznlQDnIKQebFjiHdOAZe7M9t1c2ezkGTsaEZz+WTT0cYyfjaIbXMMrUw8FYhgO3suSUA+UgpxwoBznlQDnIKQfKQU45UA5yyoFykFMOlIOccrBmOWZ4vneG1zBK9QiG552BVz4P9LHzzwZtusHzOZ43GZzUmY/SnsNkXFZnPUvDwYoMB2verTCWcjC6HJ3d9X501rNXjs772YPaSla/BGMtvXKwHMPB6A0pK1IOlIOccqAc5JQD5SCnHCgHOeVAOcgpB8pBTjlQDnLKgXKQUw6Ug5xyoBzklAPlIKccKAc55UA5yCkHykFOOVAOcsqBcpBTDpSDnHKw6T/w+GaHzL8M2AAAAABJRU5ErkJggg==">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAC6UlEQVR4Xu3dsXETQRiGYZmhB2IiItwJZDQBAR0Q0AGBqyCjFDIiYrogUOJAN9ZnS9/u6p4ntn3Szj+v9jQ367v3nz8c4JRXloUthgPDQU45UA5yyoFykFMOlIOccqAc5JQD5SCnHCgHOeVAOcgpB8pBTjlQDnLKgXKQUw6Ug5xyoBzklAPlIPc6/5Xr+v3w67oXOBzuv3y89iVuw1wfK4XJOBxKV7kBEw1HZzKOmtda10TDwWwMB+5WyCkHykFOOVAOcsqBcpBTDpSDnHKgHOSUA+UgpxwoBznlYIVyNJ/7bV5rXXfN//H289uPJ1fq3Zu3T/7MC/359/eFf2GsT9+/dl5AbzjOmQzO1JmP0p7DZFxWZz1Lw8GKDAcr3K0wG+VgdDk6u+v96Kxnrxyd97MHtZXsfc/BcnrlYDmGg9EbUlakHCgHOeVAOcgpB5umO4d0HuUTByd8clE5TitPxpynXxqOE/qTcTTqulsMB4aDnHKgHOSUA+UgpxwoBznlQDnIKQfKQU45UA5yyoFykFMOlIOccpww6lnfUdfdUj2CoXMG3qUUTkR97PzTUW/wfI61JmNynfkofayYjMvqrGdpOFiR4cCtLDnlYHQ5Orvr/eisZ68cnfezB7WVrH4Jxlp65WA5hoPRG1JWpBwoBznlQDnIKQebFjiHdOAZe7M9t1c2ezkGTsaEZz+WTT0cYyfjaIbXMMrUw8FYhgO3suSUA+UgpxwoBznlQDnIKQfKQU45UA5yyoFykFMOlIOccrBmOWZ4vneG1zBK9QiG552BVz4P9LHzzwZtusHzOZ43GZzUmY/SnsNkXFZnPUvDwYoMB2verTCWcjC6HJ3d9X501rNXjs772YPaSla/BGMtvXKwHMPB6A0pK1IOlIOccqAc5JQD5SCnHCgHOeVAOcgpB8pBTjlQDnLKgXKQUw6Ug5xyoBzklAPlIKccKAc55UA5yCkHykFOOVAOcsqBcpBTDpSDnHKw6T/w+GaHzL8M2AAAAABJRU5ErkJggg==">
+<title>Shop Supply Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{
+  --bg:#eceee9; --surface:#fafbf8; --sunk:#e2e6df; --ink:#1c2420; --muted:#5a6760; --line:#d2d9d0;
+  --accent:#2d6a4d; --accent-ink:#ffffff; --accent-soft:#d8e8de; --accent-deep:#1d4733;
+  --ok:#2c7a4c; --warn:#a96d12; --warn-soft:#f6e7cc; --crit:#b3261e; --crit-soft:#f6d9d6;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:10px; color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#131915; --surface:#1b231f; --sunk:#10150f; --ink:#e5ebe6; --muted:#9aa89f; --line:#2c3832;
+  --accent:#62b089; --accent-ink:#0c1410; --accent-soft:#1f3a2c; --accent-deep:#3b7a5a;
+  --ok:#6cc193; --warn:#e3a94c; --warn-soft:#3a2d15; --crit:#ef7d72; --crit-soft:#3d1c19; color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45}
+[hidden]{display:none!important}
+#app{min-height:100vh;display:flex;flex-direction:column;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));max-width:1180px;margin:0 auto;gap:16px}
+h2,h3{font-family:var(--display);font-weight:700;letter-spacing:.01em;margin:0;line-height:1.05}
+h2{font-size:1.9rem} h3{font-size:1.35rem}
+.eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:600}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:var(--r);font-weight:600;background:var(--sunk);border:1px solid var(--line)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.danger{background:var(--crit-soft);color:var(--crit);border-color:transparent}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sm{min-height:38px;padding:0 12px;font-size:.92rem}
+input,select{min-height:48px;padding:0 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);width:100%}
+label{display:grid;gap:4px;font-size:.88rem;font-weight:600;color:var(--muted)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.brand b{font-family:var(--display);font-size:1.5rem}
+.note{padding:10px 14px;border-radius:8px;background:var(--crit-soft);font-size:.95rem}
+.home{flex:1;display:grid;place-items:center;text-align:center;padding-block:24px}
+.big{font-family:var(--display);font-weight:700;font-size:clamp(2rem,6vw,3.4rem);letter-spacing:.02em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:18px;padding:28px 40px;width:min(100%,560px);box-shadow:0 8px 0 var(--accent-deep)}
+.big:active{transform:translateY(3px);box-shadow:0 5px 0 var(--accent-deep)}
+.home p{color:var(--muted);margin:0;max-width:46ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.tech{min-height:96px;border-radius:14px;background:var(--surface);border:1px solid var(--line);font-family:var(--display);font-size:1.7rem;font-weight:600;padding:12px}
+.tech:active{background:var(--accent-soft)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filters input{flex:1 1 220px;width:auto}
+.chip{min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:.92rem}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;padding-bottom:110px}
+.prod{display:grid;gap:10px;align-content:space-between;padding:14px;border-radius:14px;background:var(--surface);border:1px solid var(--line);min-width:0}
+.prod.on{border-color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent)}
+.prod .nm{font-weight:600;font-size:1.08rem;line-height:1.25;overflow-wrap:anywhere}
+.prod .meta{font-size:.85rem;color:var(--muted)}
+.step{display:flex;align-items:center;gap:6px}
+.step button{width:52px;height:52px;border-radius:10px;background:var(--sunk);border:1px solid var(--line);font-size:1.6rem;font-weight:600;line-height:1}
+.step .n{flex:1;text-align:center;font-family:var(--mono);font-size:1.5rem}
+.cart{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--surface);border-top:1px solid var(--line);padding:12px max(16px,env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+.cart .in{max-width:1148px;margin:0 auto;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.cart .sum{flex:1 1 240px;min-width:0;font-size:.95rem;color:var(--muted);overflow-wrap:anywhere}
+.cart .sum b{color:var(--ink)}
+.done{flex:1;display:grid;place-items:center;text-align:center}
+.done ul{list-style:none;padding:0;margin:0;display:grid;gap:4px;font-size:1.1rem}
+.check{width:84px;height:84px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:2.6rem;margin:0 auto}
+.pin{flex:1;display:grid;place-items:center}
+.pin form{display:grid;gap:14px;width:min(100%,320px);text-align:center}
+.pin input{text-align:center;font-family:var(--mono);font-size:1.8rem;letter-spacing:.4em}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{padding:12px 16px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ink);border-color:var(--accent)}
+.tab .ct{display:inline-block;min-width:22px;padding:0 6px;margin-left:6px;border-radius:999px;background:var(--warn-soft);color:var(--warn);font-size:.8rem}
+.panel{display:grid;gap:16px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px}
+.box p{margin:0;color:var(--muted)}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end}
+.form .wide{grid-column:span 2}
+@media (max-width:520px){.form .wide{grid-column:auto}}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:.76rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600;background:var(--sunk)}
+tr:last-child td{border-bottom:0}
+td.r,th.r{text-align:right}
+.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.8rem;font-weight:600}
+.pill.ok{background:var(--accent-soft);color:var(--ok)}
+.pill.low{background:var(--warn-soft);color:var(--warn)}
+.pill.out{background:var(--crit-soft);color:var(--crit)}
+tr.low td:first-child{box-shadow:inset 4px 0 0 var(--warn)}
+tr.out td:first-child{box-shadow:inset 4px 0 0 var(--crit)}
+.acts{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap}
+.qtyin{width:90px;min-height:38px}
+.logrow{display:grid;grid-template-columns:160px 1fr;gap:2px 16px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.logrow:last-child{border-bottom:0}
+.logrow .when{color:var(--muted);font-size:.9rem}
+.logrow .tag{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:600;margin-left:8px}
+.logrow .items{grid-column:2;color:var(--muted);overflow-wrap:anywhere}
+@media (max-width:560px){.logrow{grid-template-columns:1fr}.logrow .items{grid-column:1}}
+.empty{padding:28px 16px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font-family:var(--display);font-size:1.5rem;margin-bottom:4px}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{flex:1 1 140px;padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.stat .v{font-family:var(--mono);font-size:1.6rem}
+.stat.warn .v{color:var(--warn)} .stat.crit .v{color:var(--crit)}
+.techrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:10px;z-index:20;font-weight:600;max-width:calc(100% - 32px)}
+a{color:var(--accent)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"><div class="empty"><b>Loading the shop…</b>Connecting to inventory.</div></div>
+<div id="toast" class="toast" hidden></div>
+<script>
+(function(){
+var app = document.getElementById('app');
+var S = { products:[], techs:[], log:[], email:'', sheetUrl:'', loaded:false, err:'',
+  view:'home', tech:null, cart:{}, q:'', cat:'All', last:null, busy:false,
+  pin:null, tab:'inventory', editId:null, restockId:null, confirm:null, logTech:'all' };
+
+var API_URL='https://script.google.com/macros/s/AKfycbzrmF4sf_UMHB3DBmd2k6aLW3Bf60s-nbBxcCs-aa_4_jn1r4pj8Nq4NGPKuC6WLhF5/exec';
+function api(fn){ var args=[].slice.call(arguments,1);
+  return fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fn:fn,args:args}),redirect:'follow'})
+    .then(function(r){ if(!r.ok) throw new Error('Server error '+r.status); return r.json(); })
+    .then(function(j){ if(!j.ok) throw new Error(j.error||'Something went wrong.'); return j.data; })
+    .catch(function(e){ throw (e instanceof TypeError ? new Error('No connection. Check Wi-Fi or data.') : e); }); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+function byId(id){ return S.products.find(function(p){return p.id===id;}); }
+function status(p){ return p.qty<=0?'out':(p.qty<=p.reorderAt?'low':'ok'); }
+var LBL={ok:'In stock',low:'Restock',out:'Out'};
+function cats(){ var c={}; S.products.forEach(function(p){ if(p.category) c[p.category]=1; }); return ['All'].concat(Object.keys(c).sort()); }
+function fmt(ms){ return new Date(ms).toLocaleString([], {weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}); }
+function msg(e){ return (e && e.message ? e.message : String(e)).replace(/^Exception:\s*/,''); }
+function toast(t){ var el=document.getElementById('toast'); el.textContent=t; el.hidden=false; clearTimeout(toast.h); toast.h=setTimeout(function(){el.hidden=true;},2800); }
+
+/* ---------- views ---------- */
+function header(right){ return '<div class="top"><div class="brand"><b>Shop Supply Board</b><span class="eyebrow">Inventory &amp; checkout</span></div>'+(right||'')+'</div>'; }
+function vHome(){
+  return header('<button class="btn ghost sm" data-a="toPin">Manager</button>') +
+   (S.err?'<div class="note">'+esc(S.err)+'</div>':'') +
+   '<div class="home"><div style="display:grid;gap:18px;justify-items:center"><span class="eyebrow">Grabbing supplies?</span>'+
+   '<button class="big" data-a="start" '+(S.loaded?'':'disabled')+'>'+(S.loaded?'Check out product':'Loading…')+'</button>'+
+   '<p>Tap the button, pick your name, then tap everything you\'re taking. It comes off the shelf count and gets logged under your name.</p></div></div>';
+}
+function vTech(){
+  return header('<button class="btn sm" data-a="home">Cancel</button>') +
+   '<div><span class="eyebrow">Step 1 of 2</span><h2>Who\'s checking out?</h2></div>' +
+   (S.techs.length ? '<div class="grid">'+S.techs.map(function(t,i){return '<button class="tech" data-a="pickTech" data-i="'+i+'">'+esc(t)+'</button>';}).join('')+'</div>'
+     : '<div class="box empty"><b>No techs set up yet</b>The manager adds names under Manager → Techs.</div>');
+}
+function vPick(){
+  return header('<button class="btn sm" data-a="home">Cancel</button>') +
+   '<div><span class="eyebrow">Step 2 of 2 · '+esc(S.tech)+'</span><h2>What are you taking?</h2></div>' +
+   '<div class="filters"><input id="q" type="search" placeholder="Search products" value="'+esc(S.q)+'" autocomplete="off"><div class="filters" data-r="cats"></div></div>' +
+   '<div data-r="pgrid"></div><div class="cart" data-r="cart"></div>';
+}
+function rCats(){ var c=cats(); return c.length>2 ? c.map(function(x){return '<button class="chip" data-a="cat" data-c="'+esc(x)+'" aria-pressed="'+(S.cat===x)+'">'+esc(x)+'</button>';}).join('') : ''; }
+function rPgrid(){
+  if(!S.products.length) return '<div class="box empty"><b>No products yet</b>The manager adds products under Manager → Inventory.</div>';
+  var q=S.q.trim().toLowerCase();
+  var list=S.products.filter(function(p){ return (S.cat==='All'||p.category===S.cat) && (!q || (p.name+' '+p.category).toLowerCase().indexOf(q)>=0); })
+    .sort(function(a,b){return a.name.localeCompare(b.name);});
+  if(!list.length) return '<div class="empty">Nothing matches “'+esc(S.q)+'”.</div>';
+  return '<div class="pgrid">'+list.map(function(p){
+    var n=S.cart[p.id]||0, st=status(p);
+    return '<div class="prod '+(n?'on':'')+'"><div><div class="nm">'+esc(p.name)+'</div><div class="meta">'+esc(p.category)+(p.category?' · ':'')+
+      '<span class="num">'+p.qty+'</span> '+esc(p.unit||'on hand')+' '+(st!=='ok'?'<span class="pill '+st+'">'+LBL[st]+'</span>':'')+'</div></div>'+
+      (n ? '<div class="step"><button data-a="dec" data-id="'+p.id+'" aria-label="One less">−</button><span class="n">'+n+'</span><button data-a="inc" data-id="'+p.id+'" aria-label="One more">+</button></div>'
+         : '<button class="btn" style="width:100%" data-a="inc" data-id="'+p.id+'">Take</button>')+'</div>';
+  }).join('')+'</div>';
+}
+function rCart(){
+  var items=Object.keys(S.cart).filter(function(k){return S.cart[k]>0;});
+  var total=items.reduce(function(a,k){return a+S.cart[k];},0);
+  var sum=items.length ? items.map(function(k){return '<b>'+S.cart[k]+'×</b> '+esc((byId(k)||{}).name);}).join(', ') : 'Tap products to add them.';
+  return '<div class="in"><div class="sum">'+sum+'</div><button class="btn primary" data-a="confirm" '+(!total||S.busy?'disabled':'')+'>'+
+    (S.busy?'Saving…':'Check out '+(total||'')+' item'+(total===1?'':'s'))+'</button></div>';
+}
+function vDone(){
+  var c=S.last||{items:[]};
+  return '<div class="done"><div style="display:grid;gap:14px"><div class="check" aria-hidden="true">✓</div><h2>Logged for '+esc(c.tech)+'</h2>'+
+    '<ul>'+c.items.map(function(i){return '<li><span class="num">'+i.qty+'×</span> '+esc(i.name)+'</li>';}).join('')+'</ul>'+
+    '<div><button class="btn primary" data-a="home">Done</button></div><span class="eyebrow">Returning to start in a few seconds</span></div></div>';
+}
+function vPin(){
+  return header('<button class="btn sm" data-a="home">Back</button>') +
+   '<div class="pin"><form id="pinForm"><h2>Manager PIN</h2><input id="pinIn" type="password" inputmode="numeric" autocomplete="off" maxlength="8" aria-label="PIN">'+
+   '<div id="pinMsg" class="eyebrow" style="min-height:1.2em"></div><button class="btn primary" type="submit">Unlock</button></form></div>';
+}
+function vAdmin(){
+  var low=S.products.filter(function(p){return status(p)!=='ok';}).length;
+  var tabs=[['inventory','Inventory',low],['log','Checkout log',0],['techs','Techs',0],['settings','Alerts & PIN',0]];
+  return header('<button class="btn sm" data-a="lock">Lock &amp; exit</button>') +
+   '<div class="tabs" role="tablist">'+tabs.map(function(t){return '<button class="tab" role="tab" data-a="tab" data-t="'+t[0]+'" aria-selected="'+(S.tab===t[0])+'">'+t[1]+(t[2]?'<span class="ct num">'+t[2]+'</span>':'')+'</button>';}).join('')+'</div>'+
+   '<div class="panel">'+({inventory:pInv,log:pLog,techs:pTechs,settings:pSet})[S.tab]()+'</div>';
+}
+function pInv(){
+  var low=0,out=0; S.products.forEach(function(p){ var s=status(p); if(s==='low')low++; if(s==='out')out++; });
+  var wk=Date.now()-7*864e5, taken=S.log.filter(function(l){return l.action==='Checked out'&&l.when>=wk;}).reduce(function(a,l){return a+l.qty;},0);
+  return '<div class="stats"><div class="stat"><div class="eyebrow">Products</div><div class="v">'+S.products.length+'</div></div>'+
+   '<div class="stat '+(low?'warn':'')+'"><div class="eyebrow">Need restock</div><div class="v">'+low+'</div></div>'+
+   '<div class="stat '+(out?'crit':'')+'"><div class="eyebrow">Out of stock</div><div class="v">'+out+'</div></div>'+
+   '<div class="stat"><div class="eyebrow">Items out, 7 days</div><div class="v">'+taken+'</div></div></div>'+
+   '<details class="box" '+(S.products.length?'':'open')+'><summary><h3 style="display:inline">Add a product</h3></summary>'+
+   '<form id="addProd" class="form" style="margin-top:12px"><label class="wide">Product name<input id="np_name" required placeholder="e.g. Havahart 1079 trap"></label>'+
+   '<label>Category<input id="np_cat" list="catlist" placeholder="Traps"></label><label>Unit<input id="np_unit" placeholder="each, boxes, cans"></label>'+
+   '<label>On hand<input id="np_qty" type="number" min="0" step="1" required value="0"></label><label>Restock at or below<input id="np_re" type="number" min="0" step="1" required value="2"></label>'+
+   '<button class="btn primary" type="submit">Add product</button></form>'+
+   '<datalist id="catlist">'+cats().slice(1).map(function(c){return '<option value="'+esc(c)+'">';}).join('')+'</datalist></details>'+
+   rInvTable();
+}
+function rInvTable(){
+  if(!S.products.length) return '<div class="box empty"><b>Your shelf list is empty</b>Add your first product above, or type rows straight into the Products tab of the Google Sheet.</div>';
+  var ord={out:0,low:1,ok:2};
+  var list=S.products.slice().sort(function(a,b){return ord[status(a)]-ord[status(b)]||a.name.localeCompare(b.name);});
+  return '<div class="tablewrap"><table><thead><tr><th>Product</th><th>Category</th><th class="r">On hand</th><th class="r">Restock at</th><th>Status</th><th></th></tr></thead><tbody>'+
+  list.map(function(p){
+    var st=status(p);
+    if(S.editId===p.id) return '<tr><td colspan="6"><form class="form" data-edit="'+p.id+'">'+
+      '<label class="wide">Name<input name="name" required value="'+esc(p.name)+'"></label><label>Category<input name="category" list="catlist" value="'+esc(p.category)+'"></label>'+
+      '<label>Unit<input name="unit" value="'+esc(p.unit)+'"></label><label>On hand<input name="qty" type="number" min="0" step="1" required value="'+p.qty+'"></label>'+
+      '<label>Restock at<input name="reorderAt" type="number" min="0" step="1" required value="'+p.reorderAt+'"></label>'+
+      '<div class="acts"><button class="btn primary sm" type="submit">Save</button><button class="btn sm" type="button" data-a="cancelEdit">Cancel</button>'+
+      (S.confirm===p.id?'<button class="btn danger sm" type="button" data-a="delProd" data-id="'+p.id+'">Confirm delete</button>':'<button class="btn ghost sm" type="button" data-a="askDel" data-id="'+p.id+'">Delete</button>')+
+      '</div></form></td></tr>';
+    return '<tr class="'+st+'"><td><b>'+esc(p.name)+'</b></td><td>'+esc(p.category||'—')+'</td><td class="r"><span class="num">'+p.qty+'</span> <span style="color:var(--muted)">'+esc(p.unit)+'</span></td>'+
+      '<td class="r num">'+p.reorderAt+'</td><td><span class="pill '+st+'">'+LBL[st]+'</span></td><td class="r">'+
+      (S.restockId===p.id
+        ? '<form class="acts" data-restock="'+p.id+'"><input class="qtyin" name="add" type="number" min="1" step="1" required placeholder="+ qty" aria-label="Quantity received"><button class="btn primary sm" type="submit">Add</button><button class="btn sm" type="button" data-a="cancelRestock">×</button></form>'
+        : '<div class="acts"><button class="btn sm" data-a="restock" data-id="'+p.id+'">Restock</button><button class="btn sm" data-a="edit" data-id="'+p.id+'">Edit</button></div>')+
+      '</td></tr>';
+  }).join('')+'</tbody></table></div>';
+}
+function pLog(){
+  var names={}; S.log.forEach(function(l){ names[l.who]=1; });
+  var list=S.log.filter(function(l){return S.logTech==='all'||l.who===S.logTech;});
+  return '<div class="filters"><select id="logTech" style="width:auto"><option value="all">Everyone</option>'+
+    Object.keys(names).sort().map(function(n){return '<option '+(S.logTech===n?'selected':'')+'>'+esc(n)+'</option>';}).join('')+'</select>'+
+    '<span class="eyebrow">Latest 300 entries · full history is in the <a href="'+esc(S.sheetUrl)+'" target="_blank" rel="noopener">Log tab of the Sheet</a></span></div>'+
+    (list.length ? '<div class="tablewrap">'+list.map(function(l){return '<div class="logrow"><div class="when num">'+fmt(l.when)+'</div>'+
+      '<div><b>'+esc(l.who)+'</b><span class="tag">'+esc(l.action)+'</span></div><div class="items">'+
+      (l.action==='Count set'?'Set to ':(l.action==='Restocked'?'+':''))+l.qty+' '+esc(l.unit)+' '+esc(l.product)+'</div></div>';}).join('')+'</div>'
+      : '<div class="box empty"><b>No activity yet</b>Every checkout and restock shows up here with who, what and when.</div>');
+}
+function pTechs(){
+  return '<div class="box"><h3>Tech names</h3><p>These are the buttons techs tap before checking out. Removing a tech keeps their history in the log.</p>'+
+   '<form id="addTech" class="filters"><input id="nt" required placeholder="Tech name" style="flex:1 1 220px;width:auto"><button class="btn primary" type="submit">Add tech</button></form>'+
+   (S.techs.length? S.techs.map(function(t,i){return '<div class="techrow"><b>'+esc(t)+'</b>'+(S.confirm==='t'+i
+     ?'<button class="btn danger sm" data-a="delTech" data-i="'+i+'">Confirm remove</button>':'<button class="btn ghost sm" data-a="askDel" data-id="t'+i+'">Remove</button>')+'</div>';}).join('')
+     : '<div class="empty">No techs yet. Add each person who pulls from the shop.</div>')+'</div>';
+}
+function pSet(){
+  return '<div class="box"><h3>Restock alerts</h3><p>When a checkout drops a product to its restock level, an email goes here right away.</p>'+
+   '<form id="setEmail" class="filters"><input id="em" type="email" required value="'+esc(S.email)+'" style="flex:1 1 260px;width:auto"><button class="btn primary" type="submit">Save email</button></form></div>'+
+   '<div class="box"><h3>Manager PIN</h3><p>Keeps techs out of this screen. Anyone with edit access to the Google Sheet can still change data there.</p>'+
+   '<form id="setPin" class="filters"><input id="np" type="password" inputmode="numeric" pattern="[0-9]{4,8}" required placeholder="New PIN (4–8 digits)" style="flex:1 1 200px;width:auto"><button class="btn primary" type="submit">Change PIN</button></form></div>'+
+   '<div class="box"><h3>Google Sheet</h3><p>Everything lives here. You can also add products or fix counts right in the sheet.</p><div><a class="btn sm" href="'+esc(S.sheetUrl)+'" target="_blank" rel="noopener">Open the Sheet</a></div></div>';
+}
+
+var R={cats:rCats,pgrid:rPgrid,cart:rCart};
+function render(){ app.innerHTML=({home:vHome,tech:vTech,pick:vPick,done:vDone,pin:vPin,admin:vAdmin})[S.view](); refresh(); if(S.view==='pin') document.getElementById('pinIn').focus(); }
+function refresh(){ [].forEach.call(app.querySelectorAll('[data-r]'),function(el){ el.innerHTML=R[el.getAttribute('data-r')](); }); }
+function go(v){ S.view=v; S.confirm=null; render(); window.scrollTo(0,0); }
+
+/* ---------- data ---------- */
+function loadKiosk(){
+  return api('getKiosk').then(function(d){ S.products=d.products; S.techs=d.techs; S.loaded=true; S.err=''; if(S.view==='home') render(); })
+    .catch(function(e){ S.err='Can\'t reach inventory: '+msg(e); S.loaded=false; if(S.view==='home') render(); });
+}
+function applyAdmin(d){ S.products=d.products; S.techs=d.techs; S.log=d.log; S.email=d.email; S.sheetUrl=d.sheetUrl; }
+function adminCall(fn, args, ok){
+  S.busy=true;
+  return api.apply(null,[fn,S.pin].concat(args||[])).then(function(d){ applyAdmin(d); S.busy=false; if(ok) toast(ok); return true; })
+    .catch(function(e){ S.busy=false; toast(msg(e)); return false; });
+}
+
+/* ---------- events ---------- */
+app.addEventListener('click',function(e){
+  var b=e.target.closest('[data-a]'); if(!b) return;
+  var a=b.getAttribute('data-a'), id=b.getAttribute('data-id');
+  if(a==='home'){ S.cart={}; S.tech=null; S.q=''; S.cat='All'; go('home'); loadKiosk(); }
+  else if(a==='start'){ go('tech'); loadKiosk().then(function(){ if(S.view==='tech') render(); }); }
+  else if(a==='pickTech'){ S.tech=S.techs[+b.getAttribute('data-i')]; go('pick'); }
+  else if(a==='cat'){ S.cat=b.getAttribute('data-c'); refresh(); }
+  else if(a==='inc'){ S.cart[id]=(S.cart[id]||0)+1; refresh(); }
+  else if(a==='dec'){ S.cart[id]=Math.max(0,(S.cart[id]||0)-1); if(!S.cart[id]) delete S.cart[id]; refresh(); }
+  else if(a==='confirm') doCheckout();
+  else if(a==='toPin') go('pin');
+  else if(a==='lock'){ S.pin=null; S.editId=S.restockId=null; go('home'); loadKiosk(); }
+  else if(a==='tab'){ S.tab=b.getAttribute('data-t'); S.editId=S.restockId=null; render(); }
+  else if(a==='edit'){ S.editId=id; S.restockId=null; S.confirm=null; render(); }
+  else if(a==='cancelEdit'){ S.editId=null; S.confirm=null; render(); }
+  else if(a==='restock'){ S.restockId=id; S.editId=null; render(); var i=app.querySelector('[data-restock] input'); if(i) i.focus(); }
+  else if(a==='cancelRestock'){ S.restockId=null; render(); }
+  else if(a==='askDel'){ S.confirm=id; render(); }
+  else if(a==='delProd') adminCall('adminDeleteProduct',[id],'Product deleted').then(function(ok){ if(ok){ S.editId=null; S.confirm=null; } render(); });
+  else if(a==='delTech') adminCall('adminRemoveTech',[S.techs[+b.getAttribute('data-i')]],'Tech removed').then(function(){ S.confirm=null; render(); });
+});
+app.addEventListener('input',function(e){ if(e.target.id==='q'){ S.q=e.target.value; app.querySelector('[data-r="pgrid"]').innerHTML=rPgrid(); } });
+app.addEventListener('change',function(e){ if(e.target.id==='logTech'){ S.logTech=e.target.value; render(); } });
+app.addEventListener('submit',function(e){
+  e.preventDefault(); var f=e.target, v=function(id){return document.getElementById(id).value.trim();};
+  if(f.id==='pinForm'){
+    var p=document.getElementById('pinIn').value; document.getElementById('pinMsg').textContent='Checking…';
+    api('adminState',p).then(function(d){ S.pin=p; applyAdmin(d); S.tab='inventory'; go('admin'); })
+      .catch(function(err){ var m=document.getElementById('pinMsg'); if(m){ m.textContent=msg(err)+' Try again.'; document.getElementById('pinIn').value=''; } });
+  }
+  else if(f.id==='addProd'){
+    var data={name:v('np_name'),category:v('np_cat'),unit:v('np_unit'),qty:v('np_qty'),reorderAt:v('np_re')};
+    adminCall('adminSaveProduct',[data],'Added '+data.name).then(function(ok){ render(); if(ok){ var d=app.querySelector('details'); if(d) d.open=true; var n=document.getElementById('np_name'); if(n) n.focus(); } });
+  }
+  else if(f.getAttribute('data-edit')){
+    var fd=new FormData(f), pd={id:f.getAttribute('data-edit'),name:fd.get('name'),category:fd.get('category'),unit:fd.get('unit'),qty:fd.get('qty'),reorderAt:fd.get('reorderAt')};
+    adminCall('adminSaveProduct',[pd],'Saved').then(function(ok){ if(ok) S.editId=null; render(); });
+  }
+  else if(f.getAttribute('data-restock')){
+    adminCall('adminRestock',[f.getAttribute('data-restock'),new FormData(f).get('add')],'Restocked').then(function(ok){ if(ok) S.restockId=null; render(); });
+  }
+  else if(f.id==='addTech'){ var n=v('nt'); adminCall('adminAddTech',[n],'Added '+n).then(function(){ render(); }); }
+  else if(f.id==='setEmail'){ adminCall('adminSettings',[v('em'),null],'Alert email saved').then(function(){ render(); }); }
+  else if(f.id==='setPin'){ var np=v('np'); adminCall('adminSettings',[null,np],'PIN changed').then(function(ok){ if(ok) S.pin=np; render(); }); }
+});
+
+function doCheckout(){
+  if(S.busy) return;
+  var items=Object.keys(S.cart).filter(function(k){return S.cart[k]>0;}).map(function(k){return {id:k,qty:S.cart[k]};});
+  if(!items.length) return;
+  S.busy=true; refresh();
+  api('checkout',S.tech,items).then(function(r){
+    S.busy=false; S.last={tech:S.tech,items:r.items}; S.cart={}; S.tech=null; S.q=''; S.cat='All'; go('done'); loadKiosk();
+    clearTimeout(go.t); go.t=setTimeout(function(){ if(S.view==='done') go('home'); },7000);
+  }).catch(function(e){ S.busy=false; refresh(); toast('Not saved: '+msg(e)); });
+}
+
+/* idle return to start, periodic refresh on the home screen */
+var idle; function resetIdle(){ clearTimeout(idle); idle=setTimeout(function(){ if(S.view!=='home'&&S.view!=='done'){ S.cart={}; S.tech=null; S.pin=null; S.q=''; go('home'); loadKiosk(); } }, S.view==='admin'?300000:120000); }
+['pointerdown','keydown'].forEach(function(ev){ document.addEventListener(ev,resetIdle,{passive:true}); });
+setInterval(function(){ if(S.view==='home') loadKiosk(); }, 120000);
+
+render(); loadKiosk();
+})();
+</script>
+</body>
+</html>
