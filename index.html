@@ -55,6 +55,8 @@ label{display:grid;gap:4px;font-size:.88rem;font-weight:600;color:var(--muted)}
 .home{flex:1;display:grid;place-items:center;text-align:center;padding-block:24px}
 .big{font-family:var(--display);font-weight:700;font-size:clamp(2rem,6vw,3.4rem);letter-spacing:.02em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);border-radius:18px;padding:28px 40px;width:min(100%,560px);box-shadow:0 8px 0 var(--accent-deep)}
 .big:active{transform:translateY(3px);box-shadow:0 5px 0 var(--accent-deep)}
+.big.alt{background:var(--ink);color:var(--bg);box-shadow:0 8px 0 var(--muted);font-size:clamp(1.6rem,4.5vw,2.4rem);padding:20px 40px}
+.big.alt:active{box-shadow:0 5px 0 var(--muted)}
 .home p{color:var(--muted);margin:0;max-width:46ch}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
 .tech{min-height:96px;border-radius:14px;background:var(--surface);border:1px solid var(--line);font-family:var(--display);font-size:1.7rem;font-weight:600;padding:12px}
@@ -130,7 +132,7 @@ a{color:var(--ok)}
 (function(){
 var app = document.getElementById('app');
 var S = { products:[], techs:[], log:[], email:'', sheetUrl:'', loaded:false, err:'',
-  view:'home', tech:null, cart:{}, q:'', cat:'All', last:null, busy:false,
+  view:'home', mode:'out', tech:null, cart:{}, q:'', cat:'All', last:null, busy:false,
   pin:null, tab:'inventory', editId:null, restockId:null, confirm:null, logTech:'all' };
 
 var API_URL='https://script.google.com/macros/s/AKfycbzrmF4sf_UMHB3DBmd2k6aLW3Bf60s-nbBxcCs-aa_4_jn1r4pj8Nq4NGPKuC6WLhF5/exec';
@@ -156,17 +158,18 @@ function vHome(){
    (S.err?'<div class="note">'+esc(S.err)+'</div>':'') +
    '<div class="home"><div style="display:grid;gap:18px;justify-items:center"><span class="eyebrow">Grabbing supplies?</span>'+
    '<button class="big" data-a="start" '+(S.loaded?'':'disabled')+'>'+(S.loaded?'Check out product':'Loading…')+'</button>'+
-   '<p>Tap the button, pick your name, then tap everything you\'re taking. It comes off the shelf count and gets logged under your name.</p></div></div>';
+   '<button class="big alt" data-a="startReturn" '+(S.loaded?'':'disabled')+'>Return product</button>'+
+   '<p>Pick your name, then tap what you\'re taking or bringing back. Shelf counts update and it\'s logged under your name.</p></div></div>';
 }
 function vTech(){
   return header('<button class="btn sm" data-a="home">Cancel</button>') +
-   '<div><span class="eyebrow">Step 1 of 2</span><h2>Who\'s checking out?</h2></div>' +
+   '<div><span class="eyebrow">'+(S.mode==='return'?'Return · ':'')+'Step 1 of 2</span><h2>Who\'s checking out?</h2></div>' +
    (S.techs.length ? '<div class="grid">'+S.techs.map(function(t,i){return '<button class="tech" data-a="pickTech" data-i="'+i+'">'+esc(t)+'</button>';}).join('')+'</div>'
      : '<div class="box empty"><b>No techs set up yet</b>The manager adds names under Manager → Techs.</div>');
 }
 function vPick(){
   return header('<button class="btn sm" data-a="home">Cancel</button>') +
-   '<div><span class="eyebrow">Step 2 of 2 · '+esc(S.tech)+'</span><h2>What are you taking?</h2></div>' +
+   '<div><span class="eyebrow">'+(S.mode==='return'?'Return · ':'')+'Step 2 of 2 · '+esc(S.tech)+'</span><h2>'+(S.mode==='return'?'What are you bringing back?':'What are you taking?')+'</h2></div>' +
    '<div class="filters"><input id="q" type="search" placeholder="Search products" value="'+esc(S.q)+'" autocomplete="off"><div class="filters" data-r="cats"></div></div>' +
    '<div data-r="pgrid"></div><div class="cart" data-r="cart"></div>';
 }
@@ -182,7 +185,7 @@ function rPgrid(){
     return '<div class="prod '+(n?'on':'')+'"><div><div class="nm">'+esc(p.name)+'</div><div class="meta">'+esc(p.category)+(p.category?' · ':'')+
       '<span class="num">'+p.qty+'</span> '+esc(p.unit||'on hand')+' '+(st!=='ok'?'<span class="pill '+st+'">'+LBL[st]+'</span>':'')+'</div></div>'+
       (n ? '<div class="step"><button data-a="dec" data-id="'+p.id+'" aria-label="One less">−</button><span class="n">'+n+'</span><button data-a="inc" data-id="'+p.id+'" aria-label="One more">+</button></div>'
-         : '<button class="btn" style="width:100%" data-a="inc" data-id="'+p.id+'">Take</button>')+'</div>';
+         : '<button class="btn" style="width:100%" data-a="inc" data-id="'+p.id+'">'+(S.mode==='return'?'Return':'Take')+'</button>')+'</div>';
   }).join('')+'</div>';
 }
 function rCart(){
@@ -190,11 +193,11 @@ function rCart(){
   var total=items.reduce(function(a,k){return a+S.cart[k];},0);
   var sum=items.length ? items.map(function(k){return '<b>'+S.cart[k]+'×</b> '+esc((byId(k)||{}).name);}).join(', ') : 'Tap products to add them.';
   return '<div class="in"><div class="sum">'+sum+'</div><button class="btn primary" data-a="confirm" '+(!total||S.busy?'disabled':'')+'>'+
-    (S.busy?'Saving…':'Check out '+(total||'')+' item'+(total===1?'':'s'))+'</button></div>';
+    (S.busy?'Saving…':(S.mode==='return'?'Return ':'Check out ')+(total||'')+' item'+(total===1?'':'s'))+'</button></div>';
 }
 function vDone(){
   var c=S.last||{items:[]};
-  return '<div class="done"><div style="display:grid;gap:14px"><div class="check" aria-hidden="true">✓</div><h2>Logged for '+esc(c.tech)+'</h2>'+
+  return '<div class="done"><div style="display:grid;gap:14px"><div class="check" aria-hidden="true">✓</div><h2>'+(c.ret?'Returned by ':'Logged for ')+esc(c.tech)+'</h2>'+
     '<ul>'+c.items.map(function(i){return '<li><span class="num">'+i.qty+'×</span> '+esc(i.name)+'</li>';}).join('')+'</ul>'+
     '<div><button class="btn primary" data-a="home">Done</button></div><span class="eyebrow">Returning to start in a few seconds</span></div></div>';
 }
@@ -253,7 +256,7 @@ function pLog(){
     '<span class="eyebrow">Latest 300 entries · full history is in the <a href="'+esc(S.sheetUrl)+'" target="_blank" rel="noopener">Log tab of the Sheet</a></span></div>'+
     (list.length ? '<div class="tablewrap">'+list.map(function(l){return '<div class="logrow"><div class="when num">'+fmt(l.when)+'</div>'+
       '<div><b>'+esc(l.who)+'</b><span class="tag">'+esc(l.action)+'</span></div><div class="items">'+
-      (l.action==='Count set'?'Set to ':(l.action==='Restocked'?'+':''))+l.qty+' '+esc(l.unit)+' '+esc(l.product)+'</div></div>';}).join('')+'</div>'
+      (l.action==='Count set'?'Set to ':(l.action==='Restocked'||l.action==='Returned'?'+':''))+l.qty+' '+esc(l.unit)+' '+esc(l.product)+'</div></div>';}).join('')+'</div>'
       : '<div class="box empty"><b>No activity yet</b>Every checkout and restock shows up here with who, what and when.</div>');
 }
 function pTechs(){
@@ -293,7 +296,7 @@ app.addEventListener('click',function(e){
   var b=e.target.closest('[data-a]'); if(!b) return;
   var a=b.getAttribute('data-a'), id=b.getAttribute('data-id');
   if(a==='home'){ S.cart={}; S.tech=null; S.q=''; S.cat='All'; go('home'); loadKiosk(); }
-  else if(a==='start'){ go('tech'); loadKiosk().then(function(){ if(S.view==='tech') render(); }); }
+  else if(a==='start'||a==='startReturn'){ S.mode=(a==='startReturn'?'return':'out'); go('tech'); loadKiosk().then(function(){ if(S.view==='tech') render(); }); }
   else if(a==='pickTech'){ S.tech=S.techs[+b.getAttribute('data-i')]; go('pick'); }
   else if(a==='cat'){ S.cat=b.getAttribute('data-c'); refresh(); }
   else if(a==='inc'){ S.cart[id]=(S.cart[id]||0)+1; refresh(); }
@@ -340,8 +343,8 @@ function doCheckout(){
   var items=Object.keys(S.cart).filter(function(k){return S.cart[k]>0;}).map(function(k){return {id:k,qty:S.cart[k]};});
   if(!items.length) return;
   S.busy=true; refresh();
-  api('checkout',S.tech,items).then(function(r){
-    S.busy=false; S.last={tech:S.tech,items:r.items}; S.cart={}; S.tech=null; S.q=''; S.cat='All'; go('done'); loadKiosk();
+  api(S.mode==='return'?'returnItems':'checkout',S.tech,items).then(function(r){
+    S.busy=false; S.last={tech:S.tech,items:r.items,ret:S.mode==='return'}; S.cart={}; S.tech=null; S.q=''; S.cat='All'; go('done'); loadKiosk();
     clearTimeout(go.t); go.t=setTimeout(function(){ if(S.view==='done') go('home'); },7000);
   }).catch(function(e){ S.busy=false; refresh(); toast('Not saved: '+msg(e)); });
 }
