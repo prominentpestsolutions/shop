@@ -216,27 +216,25 @@ function pInv(){
    '<div class="stat"><div class="eyebrow">Items out, 7 days</div><div class="v">'+taken+'</div></div></div>'+
    '<details class="box" '+(S.products.length?'':'open')+'><summary><h3 style="display:inline">Add a product</h3></summary>'+
    '<form id="addProd" class="form" style="margin-top:12px"><label class="wide">Product name<input id="np_name" required placeholder="e.g. Havahart 1079 trap"></label>'+
-   '<label>Category<input id="np_cat" list="catlist" placeholder="Traps"></label><label>Unit<input id="np_unit" placeholder="each, boxes, cans"></label>'+
    '<label>On hand<input id="np_qty" type="number" min="0" step="1" required value="0"></label><label>Restock at or below<input id="np_re" type="number" min="0" step="1" required value="2"></label>'+
    '<button class="btn primary" type="submit">Add product</button></form>'+
-   '<datalist id="catlist">'+cats().slice(1).map(function(c){return '<option value="'+esc(c)+'">';}).join('')+'</datalist></details>'+
+   '</details>'+
    rInvTable();
 }
 function rInvTable(){
   if(!S.products.length) return '<div class="box empty"><b>Your shelf list is empty</b>Add your first product above, or type rows straight into the Products tab of the Google Sheet.</div>';
   var ord={out:0,low:1,ok:2};
   var list=S.products.slice().sort(function(a,b){return ord[status(a)]-ord[status(b)]||a.name.localeCompare(b.name);});
-  return '<div class="tablewrap"><table><thead><tr><th>Product</th><th>Category</th><th class="r">On hand</th><th class="r">Restock at</th><th>Status</th><th></th></tr></thead><tbody>'+
+  return '<div class="tablewrap"><table><thead><tr><th>Product</th><th class="r">On hand</th><th class="r">Restock at</th><th>Status</th><th></th></tr></thead><tbody>'+
   list.map(function(p){
     var st=status(p);
-    if(S.editId===p.id) return '<tr><td colspan="6"><form class="form" data-edit="'+p.id+'">'+
-      '<label class="wide">Name<input name="name" required value="'+esc(p.name)+'"></label><label>Category<input name="category" list="catlist" value="'+esc(p.category)+'"></label>'+
-      '<label>Unit<input name="unit" value="'+esc(p.unit)+'"></label><label>On hand<input name="qty" type="number" min="0" step="1" required value="'+p.qty+'"></label>'+
+    if(S.editId===p.id) return '<tr><td colspan="5"><form class="form" data-edit="'+p.id+'">'+
+      '<label class="wide">Name<input name="name" required value="'+esc(p.name)+'"></label><label>On hand<input name="qty" type="number" min="0" step="1" required value="'+p.qty+'"></label>'+
       '<label>Restock at<input name="reorderAt" type="number" min="0" step="1" required value="'+p.reorderAt+'"></label>'+
       '<div class="acts"><button class="btn primary sm" type="submit">Save</button><button class="btn sm" type="button" data-a="cancelEdit">Cancel</button>'+
       (S.confirm===p.id?'<button class="btn danger sm" type="button" data-a="delProd" data-id="'+p.id+'">Confirm delete</button>':'<button class="btn ghost sm" type="button" data-a="askDel" data-id="'+p.id+'">Delete</button>')+
       '</div></form></td></tr>';
-    return '<tr class="'+st+'"><td><b>'+esc(p.name)+'</b></td><td>'+esc(p.category||'—')+'</td><td class="r"><span class="num">'+p.qty+'</span> <span style="color:var(--muted)">'+esc(p.unit)+'</span></td>'+
+    return '<tr class="'+st+'"><td><b>'+esc(p.name)+'</b></td><td class="r"><span class="num">'+p.qty+'</span> <span style="color:var(--muted)">'+esc(p.unit)+'</span></td>'+
       '<td class="r num">'+p.reorderAt+'</td><td><span class="pill '+st+'">'+LBL[st]+'</span></td><td class="r">'+
       (S.restockId===p.id
         ? '<form class="acts" data-restock="'+p.id+'"><input class="qtyin" name="add" type="number" min="1" step="1" required placeholder="+ qty" aria-label="Quantity received"><button class="btn primary sm" type="submit">Add</button><button class="btn sm" type="button" data-a="cancelRestock">×</button></form>'
@@ -319,11 +317,11 @@ app.addEventListener('submit',function(e){
       .catch(function(err){ var m=document.getElementById('pinMsg'); if(m){ m.textContent=msg(err)+' Try again.'; document.getElementById('pinIn').value=''; } });
   }
   else if(f.id==='addProd'){
-    var data={name:v('np_name'),category:v('np_cat'),unit:v('np_unit'),qty:v('np_qty'),reorderAt:v('np_re')};
+    var data={name:v('np_name'),qty:v('np_qty'),reorderAt:v('np_re')};
     adminCall('adminSaveProduct',[data],'Added '+data.name).then(function(ok){ render(); if(ok){ var d=app.querySelector('details'); if(d) d.open=true; var n=document.getElementById('np_name'); if(n) n.focus(); } });
   }
   else if(f.getAttribute('data-edit')){
-    var fd=new FormData(f), pd={id:f.getAttribute('data-edit'),name:fd.get('name'),category:fd.get('category'),unit:fd.get('unit'),qty:fd.get('qty'),reorderAt:fd.get('reorderAt')};
+    var fd=new FormData(f), pd={id:f.getAttribute('data-edit'),name:fd.get('name'),category:'',unit:'',qty:fd.get('qty'),reorderAt:fd.get('reorderAt')};
     adminCall('adminSaveProduct',[pd],'Saved').then(function(ok){ if(ok) S.editId=null; render(); });
   }
   else if(f.getAttribute('data-restock')){
