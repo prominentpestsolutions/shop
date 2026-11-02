@@ -143,8 +143,9 @@ var BR=(function(){ var q=(new URLSearchParams(location.search).get('branch')||'
 if(!BR) S.view='branch';
 function brName(){ return BR?BRANCHES[BR]:'Prominent'; }
 var API_URL='https://script.google.com/macros/s/AKfycbzrmF4sf_UMHB3DBmd2k6aLW3Bf60s-nbBxcCs-aa_4_jn1r4pj8Nq4NGPKuC6WLhF5/exec';
-function api(fn){ var args=[].slice.call(arguments,1);
-  return fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fn:fn,args:[BR].concat(args)}),redirect:'follow'})
+function api(fn){ return apiBr(BR,fn,[].slice.call(arguments,1)); }
+function apiBr(br,fn,args){
+  return fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fn:fn,args:[br].concat(args)}),redirect:'follow'})
     .then(function(r){ if(!r.ok) throw new Error('Server error '+r.status); return r.json(); })
     .then(function(j){ if(!j.ok) throw new Error(j.error||'Something went wrong.'); return j.data; })
     .catch(function(e){ throw (e instanceof TypeError ? new Error('No connection. Check Wi-Fi or data.') : e); }); }
@@ -162,7 +163,7 @@ var MARK='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgBAMAAAAQtmoLAAAA
 function header(right){ return '<div class="top"><div class="brand"><img class="mark" src="'+MARK+'" alt="" width="40" height="40"><div class="txt"><b>'+esc(brName())+' Shop</b><span class="eyebrow">Prominent Pest Solutions</span></div></div>'+(right||'')+'</div>'; }
 function vHome(){
   return '<a class="back" href="/">← All tools</a>'+header('<button class="btn ghost sm" data-a="toPin">Manager</button>') +
-   (S.err?'<div class="note">'+esc(S.err)+'</div>':'') +
+   (S.err?'<div class="note">'+esc(S.err)+'</div>':'') + syncNote() +
    '<div class="home"><div style="display:grid;gap:18px;justify-items:center"><span class="eyebrow">Grabbing supplies?</span>'+
    '<button class="big" data-a="start" '+(S.loaded?'':'disabled')+'>'+(S.loaded?'Check out product':'Loading…')+'</button>'+
    '<button class="big alt" data-a="startReturn" '+(S.loaded?'':'disabled')+'>Return product</button>'+
@@ -294,11 +295,41 @@ function refresh(){ [].forEach.call(app.querySelectorAll('[data-r]'),function(el
 function go(v){ S.view=v; S.confirm=null; render(); window.scrollTo(0,0); }
 
 /* ---------- data ---------- */
+function fromCache(){
+  try{ var c=JSON.parse(store('kiosk_'+BR)||'null'); if(c&&c.products){ S.products=overlay(c.products); S.techs=c.techs; S.loaded=true; } }catch(_){}
+}
 function loadKiosk(){
   if(!BR) return Promise.resolve();
-  return api('getKiosk').then(function(d){ S.products=d.products; S.techs=d.techs; S.loaded=true; S.err=''; if(S.view==='home') render(); })
-    .catch(function(e){ S.err='Can\'t reach inventory: '+msg(e); S.loaded=false; if(S.view==='home') render(); });
+  var br=BR;
+  return api('getKiosk').then(function(d){ if(br!==BR) return; store('kiosk_'+BR,JSON.stringify(d)); S.products=overlay(d.products); S.techs=d.techs; S.loaded=true; S.err='';
+      if(S.view==='home') render(); else if(S.view==='pick') refresh(); })
+    .catch(function(e){ if(S.loaded){ S.err=''; } else { S.err='Can\'t reach inventory: '+msg(e); } if(S.view==='home') render(); });
 }
+/* ---------- offline-safe checkout queue ---------- */
+function getQ(){ try{ return JSON.parse(store('shopQueue')||'[]'); }catch(_){ return []; } }
+function setQ(q){ store('shopQueue',JSON.stringify(q)); }
+function pendingHere(){ return getQ().filter(function(x){ return x.br===BR; }); }
+function overlay(list){ // show not-yet-synced checkouts in the counts
+  list=list.map(function(p){ return Object.assign({},p); });
+  pendingHere().forEach(function(op){ op.items.forEach(function(it){ var p=list.filter(function(x){return x.id===it.id;})[0];
+    if(p) p.qty=op.fn==='returnItems'?p.qty+it.qty:Math.max(0,p.qty-it.qty); }); });
+  return list;
+}
+function syncNote(){ var n=pendingHere().length; return n?'<div class="note" style="background:var(--warn-soft)">⟳ '+n+' checkout'+(n===1?'':'s')+' waiting to sync — it\'ll send automatically when the connection is back.</div>':''; }
+var flushing=false;
+function retryable(m){ return /connection|server error|timeout|lock|too many|try again|unavailable|internal/i.test(m); }
+function flush(){
+  if(flushing) return; var q=getQ(); if(!q.length) return;
+  flushing=true; var op=q[0];
+  apiBr(op.br,op.fn,[op.tech,op.items,op.when,op.id]).then(function(){
+    setQ(getQ().filter(function(x){return x.id!==op.id;})); flushing=false;
+    if(!getQ().length){ loadKiosk(); } if(S.view==='home') render(); flush();
+  }).catch(function(e){ flushing=false; var m=msg(e);
+    if(!retryable(m)){ setQ(getQ().filter(function(x){return x.id!==op.id;})); toast('A '+(op.fn==='returnItems'?'return':'checkout')+' by '+op.tech+' could not be saved: '+m); if(S.view==='home') render(); flush(); }
+  });
+}
+setInterval(flush,20000); window.addEventListener('online',flush);
+document.addEventListener('visibilitychange',function(){ if(!document.hidden){ flush(); if(S.view==='home') loadKiosk(); } });
 function applyAdmin(d){ S.products=d.products; S.techs=d.techs; S.log=d.log; S.email=d.email; S.sheetUrl=d.sheetUrl; }
 function adminCall(fn, args, ok){
   S.busy=true;
@@ -311,10 +342,10 @@ app.addEventListener('click',function(e){
   var b=e.target.closest('[data-a]'); if(!b) return;
   var a=b.getAttribute('data-a'), id=b.getAttribute('data-id');
   if(a==='switchBranch'){ go('branch'); }
-  else if(a==='setBranch'){ if(id!==BR){ BR=id; S.products=[]; S.techs=[]; S.loaded=false; S.err=''; S.pin=null; } store('shopBranch',BR);
+  else if(a==='setBranch'){ if(id!==BR){ BR=id; S.products=[]; S.techs=[]; S.loaded=false; S.err=''; S.pin=null; fromCache(); } store('shopBranch',BR);
     try{ history.replaceState(null,'','?branch='+BR); }catch(_){} document.title=brName()+' Shop'; go('home'); loadKiosk(); }
   else if(a==='home'){ S.cart={}; S.tech=null; S.q=''; S.cat='All'; go('home'); loadKiosk(); }
-  else if(a==='start'||a==='startReturn'){ S.mode=(a==='startReturn'?'return':'out'); go('tech'); loadKiosk().then(function(){ if(S.view==='tech') render(); }); }
+  else if(a==='start'||a==='startReturn'){ S.mode=(a==='startReturn'?'return':'out'); var before=JSON.stringify(S.techs); go('tech'); loadKiosk().then(function(){ if(S.view==='tech'&&JSON.stringify(S.techs)!==before) render(); }); }
   else if(a==='pickTech'){ S.tech=S.techs[+b.getAttribute('data-i')]; go('pick'); }
   else if(a==='cat'){ S.cat=b.getAttribute('data-c'); refresh(); }
   else if(a==='inc'){ S.cart[id]=(S.cart[id]||0)+1; refresh(); }
@@ -360,11 +391,13 @@ function doCheckout(){
   if(S.busy) return;
   var items=Object.keys(S.cart).filter(function(k){return S.cart[k]>0;}).map(function(k){return {id:k,qty:S.cart[k]};});
   if(!items.length) return;
-  S.busy=true; refresh();
-  api(S.mode==='return'?'returnItems':'checkout',S.tech,items).then(function(r){
-    S.busy=false; S.last={tech:S.tech,items:r.items,ret:S.mode==='return'}; S.cart={}; S.tech=null; S.q=''; S.cat='All'; go('done'); loadKiosk();
-    clearTimeout(go.t); go.t=setTimeout(function(){ if(S.view==='done') go('home'); },7000);
-  }).catch(function(e){ S.busy=false; refresh(); toast('Not saved: '+msg(e)); });
+  var op={id:Date.now().toString(36)+Math.random().toString(36).slice(2,8),br:BR,fn:S.mode==='return'?'returnItems':'checkout',tech:S.tech,items:items,when:Date.now()};
+  var q=getQ(); q.push(op); setQ(q);
+  S.products=S.products.map(function(p){ var it=items.filter(function(x){return x.id===p.id;})[0]; if(!it) return p;
+    var c=Object.assign({},p); c.qty=op.fn==='returnItems'?c.qty+it.qty:Math.max(0,c.qty-it.qty); return c; });
+  S.last={tech:S.tech,items:items.map(function(it){ return {name:(byId(it.id)||{}).name||'Item',qty:it.qty}; }),ret:op.fn==='returnItems'};
+  S.cart={}; S.tech=null; S.q=''; S.cat='All'; go('done'); flush();
+  clearTimeout(go.t); go.t=setTimeout(function(){ if(S.view==='done') go('home'); },5000);
 }
 
 /* idle return to start, periodic refresh on the home screen */
@@ -373,7 +406,8 @@ var idle; function resetIdle(){ clearTimeout(idle); idle=setTimeout(function(){ 
 setInterval(function(){ if(S.view==='home') loadKiosk(); }, 120000);
 
 if(BR) document.title=brName()+' Shop';
-render(); loadKiosk();
+fromCache();
+render(); loadKiosk(); flush();
 })();
 </script>
 </body>
