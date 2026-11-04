@@ -125,9 +125,9 @@ a{color:var(--ok)}
 .back{align-self:flex-start;font-weight:600;font-size:.95rem;text-decoration:none;padding:4px 0;margin-bottom:-8px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
-<meta name="build" content="20261103b">
+<meta name="build" content="20261104a">
 <script>/* auto-update: reload when a newer version is published */
-(function(){var B='20261103b';
+(function(){var B='20261104a';
  function chk(){ fetch(location.pathname+'?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():'';}).then(function(t){
   var m=/name="build" content="([^"]+)"/.exec(t); if(!m||m[1]===B) return;
   var u=new URL(location.href); if(u.searchParams.get('v')===m[1]) return;
@@ -153,7 +153,7 @@ var BR=(function(){ var q=(new URLSearchParams(location.search).get('branch')||'
   if(BRANCHES[q]){ store('shopBranch',q); return q; } var s=(store('shopBranch')||'').toUpperCase(); return BRANCHES[s]?s:null; })();
 if(!BR) S.view='branch';
 function brName(){ return BR?BRANCHES[BR]:'Prominent'; }
-var API_URL='https://script.google.com/macros/s/AKfycbzrmF4sf_UMHB3DBmd2k6aLW3Bf60s-nbBxcCs-aa_4_jn1r4pj8Nq4NGPKuC6WLhF5/exec';
+var API_URL='https://script.google.com/macros/s/AKfycbxo4fckh7oI-qBhFa1qK_7597w_yS4p43mspjgEG7k0DzNAUEFPfAtTxGfDWJM3GNG6Xw/exec';
 function api(fn){ return apiBr(BR,fn,[].slice.call(arguments,1)); }
 function apiBr(br,fn,args){
   return fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fn:fn,args:[br].concat(args)}),redirect:'follow'})
