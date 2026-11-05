@@ -125,9 +125,9 @@ a{color:var(--ok)}
 .back{align-self:flex-start;font-weight:600;font-size:.95rem;text-decoration:none;padding:4px 0;margin-bottom:-8px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
-<meta name="build" content="20261104a">
+<meta name="build" content="20261104m">
 <script>/* auto-update: reload when a newer version is published */
-(function(){var B='20261104a';
+(function(){var B='20261104m';
  function chk(){ fetch(location.pathname+'?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():'';}).then(function(t){
   var m=/name="build" content="([^"]+)"/.exec(t); if(!m||m[1]===B) return;
   var u=new URL(location.href); if(u.searchParams.get('v')===m[1]) return;
@@ -177,8 +177,9 @@ function vHome(){
    (S.err?'<div class="note">'+esc(S.err)+'</div>':'') + syncNote() +
    '<div class="home"><div style="display:grid;gap:18px;justify-items:center"><span class="eyebrow">Grabbing supplies?</span>'+
    '<button class="big" data-a="start" '+(S.loaded?'':'disabled')+'>'+(S.loaded?'Check out product':'Loading…')+'</button>'+
-   '<button class="big alt" data-a="startReturn" '+(S.loaded?'':'disabled')+'>Return product</button>'+
-   '<p>Pick your name, then tap what you\'re taking or bringing back. Shelf counts update and it\'s logged under your name.</p>'+
+   '<button class="big alt" data-a="startReturn" '+(S.loaded?'':'disabled')+'>Restock</button>'+
+   '<span class="eyebrow" style="margin-top:-10px;text-transform:none;letter-spacing:0;font-size:.9rem">Returning product to the shop or restocking the shelf</span>'+
+   '<p>Pick your name, then tap what you\'re taking or restocking. Shelf counts update and it\'s logged under your name.</p>'+
    '<button class="btn ghost sm" data-a="switchBranch">Not '+esc(brName())+'? Switch branch</button></div></div>';
 }
 function vBranch(){
@@ -189,13 +190,13 @@ function vBranch(){
 }
 function vTech(){
   return header('<button class="btn sm" data-a="home">Cancel</button>') +
-   '<div><span class="eyebrow">'+(S.mode==='return'?'Return · ':'')+'Step 1 of 2</span><h2>Who\'s checking out?</h2></div>' +
+   '<div><span class="eyebrow">'+(S.mode==='return'?'Restock · ':'')+'Step 1 of 2</span><h2>Who\'s checking out?</h2></div>' +
    (S.techs.length ? '<div class="grid">'+S.techs.map(function(t,i){return '<button class="tech" data-a="pickTech" data-i="'+i+'">'+esc(t)+'</button>';}).join('')+'</div>'
      : '<div class="box empty"><b>No techs set up yet</b>The manager adds names under Manager → Techs.</div>');
 }
 function vPick(){
   return header('<button class="btn sm" data-a="home">Cancel</button>') +
-   '<div><span class="eyebrow">'+(S.mode==='return'?'Return · ':'')+'Step 2 of 2 · '+esc(S.tech)+'</span><h2>'+(S.mode==='return'?'What are you bringing back?':'What are you taking?')+'</h2></div>' +
+   '<div><span class="eyebrow">'+(S.mode==='return'?'Restock · ':'')+'Step 2 of 2 · '+esc(S.tech)+'</span><h2>'+(S.mode==='return'?'What are you returning or restocking?':'What are you taking?')+'</h2></div>' +
    '<div class="filters"><input id="q" type="search" placeholder="Search products" value="'+esc(S.q)+'" autocomplete="off"><div class="filters" data-r="cats"></div></div>' +
    '<div data-r="pgrid"></div><div class="cart" data-r="cart"></div>';
 }
@@ -211,7 +212,7 @@ function rPgrid(){
     return '<div class="prod '+(n?'on':'')+'"><div><div class="nm">'+esc(p.name)+'</div><div class="meta">'+esc(p.category)+(p.category?' · ':'')+
       '<span class="num">'+p.qty+'</span> '+esc(p.unit||'on hand')+' '+(st!=='ok'?'<span class="pill '+st+'">'+LBL[st]+'</span>':'')+'</div></div>'+
       (n ? '<div class="step"><button data-a="dec" data-id="'+p.id+'" aria-label="One less">−</button><span class="n">'+n+'</span><button data-a="inc" data-id="'+p.id+'" aria-label="One more">+</button></div>'
-         : '<button class="btn" style="width:100%" data-a="inc" data-id="'+p.id+'">'+(S.mode==='return'?'Return':'Take')+'</button>')+'</div>';
+         : '<button class="btn" style="width:100%" data-a="inc" data-id="'+p.id+'">'+(S.mode==='return'?'Add':'Take')+'</button>')+'</div>';
   }).join('')+'</div>';
 }
 function rCart(){
@@ -219,11 +220,11 @@ function rCart(){
   var total=items.reduce(function(a,k){return a+S.cart[k];},0);
   var sum=items.length ? items.map(function(k){return '<b>'+S.cart[k]+'×</b> '+esc((byId(k)||{}).name);}).join(', ') : 'Tap products to add them.';
   return '<div class="in"><div class="sum">'+sum+'</div><button class="btn primary" data-a="confirm" '+(!total||S.busy?'disabled':'')+'>'+
-    (S.busy?'Saving…':(S.mode==='return'?'Return ':'Check out ')+(total||'')+' item'+(total===1?'':'s'))+'</button></div>';
+    (S.busy?'Saving…':(S.mode==='return'?'Restock ':'Check out ')+(total||'')+' item'+(total===1?'':'s'))+'</button></div>';
 }
 function vDone(){
   var c=S.last||{items:[]};
-  return '<div class="done"><div style="display:grid;gap:14px"><div class="check" aria-hidden="true">✓</div><h2>'+(c.ret?'Returned by ':'Logged for ')+esc(c.tech)+'</h2>'+
+  return '<div class="done"><div style="display:grid;gap:14px"><div class="check" aria-hidden="true">✓</div><h2>'+(c.ret?'Restocked by ':'Logged for ')+esc(c.tech)+'</h2>'+
     '<ul>'+c.items.map(function(i){return '<li><span class="num">'+i.qty+'×</span> '+esc(i.name)+'</li>';}).join('')+'</ul>'+
     '<div><button class="btn primary" data-a="home">Done</button></div><span class="eyebrow">Returning to start in a few seconds</span></div></div>';
 }
